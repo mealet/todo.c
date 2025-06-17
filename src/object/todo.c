@@ -67,7 +67,7 @@ void list_remove(todoList *list, size_t position) {
   }
 
   if (position >= list->len) {
-    printf("RUNTIME PANIC FROM `strbuf`\n");
+    printf("RUNTIME PANIC FROM `todo`\n");
     printf("Attempted to remove position %ld, but list length is %ld\n",
            position, list->len);
     exit(1);
@@ -108,9 +108,109 @@ void list_remove(todoList *list, size_t position) {
   }
 }
 
-void list_setTitle(todoList *list, size_t position, strBuffer value);
-void list_setDescription(todoList *list, size_t position, strBuffer value);
-void list_setChecked(todoList *list, size_t position, bool value);
+todoObject *list_get(todoList *list, size_t position) {
+  if (position >= list->len) {
+    printf("RUNTIME PANIC FROM `todo`\n");
+    printf("Attempted to edit position %ld, but list length is %ld\n", position,
+           list->len);
+    exit(1);
+  }
+
+  todoObject *pointer;
+  if ((list->len - position) < position) {
+    pointer = list->latest;
+
+    while (pointer->index != position) {
+      pointer = pointer->previous;
+    }
+  } else {
+    pointer = list->head;
+
+    while (pointer->index != position) {
+      pointer = pointer->next;
+    }
+  }
+
+  return pointer;
+}
+
+void list_setTitle(todoList *list, size_t position, strBuffer value) {
+  if (position >= list->len) {
+    printf("RUNTIME PANIC FROM `todo`\n");
+    printf("Attempted to edit position %ld, but list length is %ld\n", position,
+           list->len);
+    exit(1);
+  }
+
+  todoObject *pointer;
+  if ((list->len - position) < position) {
+    pointer = list->latest;
+
+    while (pointer->index != position) {
+      pointer = pointer->previous;
+    }
+  } else {
+    pointer = list->head;
+
+    while (pointer->index != position) {
+      pointer = pointer->next;
+    }
+  }
+
+  strbuf_free(&pointer->title);
+  pointer->title = value;
+}
+void list_setDescription(todoList *list, size_t position, strBuffer value) {
+  if (position >= list->len) {
+    printf("RUNTIME PANIC FROM `todo`\n");
+    printf("Attempted to edit position %ld, but list length is %ld\n", position,
+           list->len);
+    exit(1);
+  }
+
+  todoObject *pointer;
+  if ((list->len - position) < position) {
+    pointer = list->latest;
+
+    while (pointer->index != position) {
+      pointer = pointer->previous;
+    }
+  } else {
+    pointer = list->head;
+
+    while (pointer->index != position) {
+      pointer = pointer->next;
+    }
+  }
+
+  strbuf_free(&pointer->description);
+  pointer->description = value;
+}
+void list_setChecked(todoList *list, size_t position, bool value) {
+  if (position >= list->len) {
+    printf("RUNTIME PANIC FROM `todo`\n");
+    printf("Attempted to edit position %ld, but list length is %ld\n", position,
+           list->len);
+    exit(1);
+  }
+
+  todoObject *pointer;
+  if ((list->len - position) < position) {
+    pointer = list->latest;
+
+    while (pointer->index != position) {
+      pointer = pointer->previous;
+    }
+  } else {
+    pointer = list->head;
+
+    while (pointer->index != position) {
+      pointer = pointer->next;
+    }
+  }
+
+  pointer->checked = value;
+}
 
 void list_free(todoList *list) {
   list->len = 0;
