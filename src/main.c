@@ -1,15 +1,13 @@
 #include <stdio.h>
 
 #include "object/todo.h"
+#include "storage/storage.h"
+
+#define STORAGE_PATH "todo"
 
 int main() {
   todoList list = list_new();
-
-  list_append(&list, strbuf_from("Something"), strbuf_from("Hello fellas"));
-  list_append(&list, strbuf_from("Aasd"), strbuf_from("Hello"));
-
-  list_setChecked(&list, 0, true);
-  list_setTitle(&list, 1, strbuf_from("Say hello"));
+  storage_load(&list, STORAGE_PATH);
 
   for (size_t i = 0; i < list.len; i++) {
     todoObject *ptr = list_get(&list, i);
@@ -17,6 +15,9 @@ int main() {
     printf("%ld | %s | %s | %s\n", ptr->index, strbuf_get(&ptr->title),
            strbuf_get(&ptr->description), ptr->checked ? "✅" : "❌");
   }
+
+  // int res = storage_save(&list, STORAGE_PATH);
+  // printf("Result is: %d\n", res);
 
   list_free(&list);
 

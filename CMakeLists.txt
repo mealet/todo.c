@@ -17,11 +17,12 @@ add_executable(
 
 # Libraries
 
-add_subdirectory(src/utils)
 add_subdirectory(src/object)
+add_subdirectory(src/storage)
+add_subdirectory(src/utils)
 
 target_link_libraries(
   ${PROJECT_NAME}
   PRIVATE
-  object utils
+  object storage utils
 )
