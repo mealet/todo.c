@@ -7,6 +7,19 @@ I've made it just for fun and this code is NOT a good example!
 - **C-Standart:** C11
 - **Build Systems:** cmake
 
+# ✨ Usage
+```
+todo [ARGUMENTS]
+
+Options:
+add [TITLE] [DESCRIPTION]
+set [ID] [TITLE] [DESCRIPTION]
+remove [ID]
+check [ID]
+help
+```
+On first launch program will create todo list file at the same dir and show you CLI arguments.
+
 ## 🛠️ How to Build
 1. Install C compiler. Recommended: `gcc`, `clang`
 2. Install [CMake](https://cmake.org/)
