@@ -20,9 +20,11 @@ add_executable(
 add_subdirectory(src/object)
 add_subdirectory(src/storage)
 add_subdirectory(src/utils)
+add_subdirectory(lib)
 
 target_link_libraries(
   ${PROJECT_NAME}
   PRIVATE
   object storage utils
+  libfort
 )

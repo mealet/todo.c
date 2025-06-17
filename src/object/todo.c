@@ -45,17 +45,20 @@ void list_pop(todoList *list) {
   if (list->len == 0)
     return;
 
-  todoObject *newLatest;
   if (list->len == 1) {
-    newLatest = list->head;
+    object_cleanup(list->head);
   } else {
-    newLatest = list->latest->previous;
+    todoObject *slot = list->latest;
+    todoObject *clearable = slot->previous;
+    todoObject *newLatest = clearable->previous;
+
+    newLatest->next = slot;
+
+    object_cleanup(clearable);
+    free(clearable);
   }
 
-  object_cleanup(list->latest);
-  free(list->latest);
-
-  list->latest = newLatest;
+  list->len -= 1;
 }
 void list_remove(todoList *list, size_t position) {
   if (list->len == 0) {
@@ -106,6 +109,8 @@ void list_remove(todoList *list, size_t position) {
 
     pointer = pointer->next;
   }
+
+  list->len -= 1;
 }
 
 todoObject *list_get(todoList *list, size_t position) {
@@ -213,6 +218,12 @@ void list_setChecked(todoList *list, size_t position, bool value) {
 }
 
 void list_free(todoList *list) {
+  if (list->len == 0) {
+    free(list->head);
+    return;
+  }
+  printf("%ld\n", list->len);
+
   list->len = 0;
   todoObject *ptr = list->head;
 
