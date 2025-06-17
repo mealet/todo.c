@@ -37,6 +37,7 @@ todoObject *list_get(todoList *list, size_t position);
 void list_setTitle(todoList *list, size_t position, strBuffer value);
 void list_setDescription(todoList *list, size_t position, strBuffer value);
 void list_setChecked(todoList *list, size_t position, bool value);
+void list_check(todoList *list, size_t position);
 
 void list_free(todoList *list);
 

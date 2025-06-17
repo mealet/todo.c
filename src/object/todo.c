@@ -77,7 +77,9 @@ void list_remove(todoList *list, size_t position) {
   }
 
   todoObject *pointer;
-  if ((list->len - position) < position) {
+  if (position == 0) {
+    pointer = list->head;
+  } else if ((list->len - position) < position) {
     pointer = list->latest;
 
     while (pointer->index != position) {
@@ -95,13 +97,17 @@ void list_remove(todoList *list, size_t position) {
   todoObject *rhs = pointer->next;
   size_t index = pointer->index;
 
-  lhs->next = rhs;
-  rhs->previous = lhs;
+  if (position == 0) {
+    list->head = rhs;
+  } else {
+    lhs->next = rhs;
+    rhs->previous = lhs;
+  }
 
   object_cleanup(pointer);
   free(pointer);
 
-  pointer = lhs;
+  pointer = rhs;
 
   while (pointer) {
     pointer->index = index;
@@ -132,6 +138,10 @@ todoObject *list_get(todoList *list, size_t position) {
     pointer = list->head;
 
     while (pointer->index != position) {
+      if (!pointer->next) {
+        todo_panic("Null pointer reached in `list_get()`");
+      }
+
       pointer = pointer->next;
     }
   }
@@ -217,12 +227,16 @@ void list_setChecked(todoList *list, size_t position, bool value) {
   pointer->checked = value;
 }
 
+void list_check(todoList *list, size_t position) {
+  todoObject *ptr = list_get(list, position);
+  ptr->checked = !ptr->checked;
+}
+
 void list_free(todoList *list) {
   if (list->len == 0) {
     free(list->head);
     return;
   }
-  printf("%ld\n", list->len);
 
   list->len = 0;
   todoObject *ptr = list->head;
