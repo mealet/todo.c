@@ -103,7 +103,8 @@ int main(int argc, char *argv[]) {
     todoObject *ptr = list_get(&list, i);
 
     char index[3];
-    sprintf(index, "%ld", ptr->index + 1);
+    size_t ptr_index = empty ? ptr->index : ptr->index + 1;
+    sprintf(index, "%ld", ptr_index);
 
     ft_write_ln(table, index, strbuf_get(&ptr->title),
                 strbuf_get(&ptr->description), ptr->checked ? "✅" : "❌");
